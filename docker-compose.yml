@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  anime-or-not-api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount for development (optional)
+      - ./app:/app/app
+      - ./src:/app/src
+    environment:
+      - PYTHONPATH=/app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/model/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 

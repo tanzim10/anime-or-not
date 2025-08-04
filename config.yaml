@@ -1,0 +1,119 @@
+# AnimeOrNot Configuration File
+# This file contains all configuration parameters for the application
+
+# Application Settings
+app:
+  name: "AnimeOrNot API"
+  version: "1.0.0"
+  description: "FastAPI service for anime vs cartoon classification"
+  debug: false
+  host: "0.0.0.0"
+  port: 8000
+
+# Model Configuration
+model:
+  name: "ResNet50"
+  version: "1.0"
+  num_classes: 2
+  input_size: [224, 224]
+  model_path: "best_model.pth"
+  class_names: ["Anime", "Cartoon"]
+  
+  # Model Architecture
+  architecture:
+    backbone: "ResNet50"
+    pretrained: false
+    dropout_rate: 0.5
+    
+  # Training Parameters (for reference)
+  training:
+    batch_size: 32
+    learning_rate: 0.001
+    epochs: 50
+    optimizer: "Adam"
+    loss_function: "CrossEntropyLoss"
+
+# Data Processing
+data:
+  # Image preprocessing
+  preprocessing:
+    resize: [224, 224]
+    normalize:
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
+    augmentation: false
+    
+  # Supported image formats
+  supported_formats: ["jpg", "jpeg", "png", "bmp", "tiff"]
+
+# API Configuration
+api:
+  # Endpoints
+  endpoints:
+    health: "/model/health"
+    info: "/model/model-info"
+    predict: "/model/predict"
+    
+  # Response settings
+  response:
+    include_probability: true
+    include_confidence: true
+    
+  # Rate limiting (optional)
+  rate_limit:
+    enabled: false
+    requests_per_minute: 60
+
+# Device Configuration
+device:
+  # Auto-detect or specify
+  type: "auto"  # "cpu", "cuda", or "auto"
+  cuda_device: 0  # GPU device number if using CUDA
+  
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "app.log"
+  
+# Security Settings
+security:
+  # File upload limits
+  upload:
+    max_file_size: "10MB"
+    allowed_extensions: ["jpg", "jpeg", "png", "bmp", "tiff"]
+    
+  # CORS settings
+  cors:
+    enabled: true
+    origins: ["*"]  # In production, specify actual domains
+    
+# Performance Settings
+performance:
+  # Model inference
+  inference:
+    batch_size: 1
+    timeout: 30  # seconds
+    
+  # Memory management
+  memory:
+    max_workers: 4
+    worker_timeout: 300  # seconds
+
+# Monitoring and Health Checks
+monitoring:
+  health_check:
+    enabled: true
+    interval: 30  # seconds
+    timeout: 10   # seconds
+    
+  # Metrics collection
+  metrics:
+    enabled: false
+    endpoint: "/metrics"
+
+# Development Settings
+development:
+  reload: true
+  log_level: "DEBUG"
+  show_errors: true
